@@ -5,6 +5,7 @@
 #include <QMainWindow>
 #include <QNetworkAccessManager>
 #include <QPushButton>
+#include <QLabel>
 
 
 class MainWindow : public QMainWindow {
@@ -18,9 +19,12 @@ class MainWindow : public QMainWindow {
 
     void handleReply(QNetworkReply *reply);
     QNetworkAccessManager *manager;
-    QListWidget *statusList;
+    QListWidget *goodStatusList;
+    QListWidget *badStatusList;
     QPushButton *fetchButton;
     QVBoxLayout *layout;
+    QLabel *goodStatusLabel;
+    QLabel *badStatusLabel;
 
 };
 

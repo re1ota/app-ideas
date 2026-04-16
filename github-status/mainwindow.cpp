@@ -21,12 +21,19 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent) {
     manager = new QNetworkAccessManager(this);
 
     QWidget *centralWidget = new QWidget(this);
-    statusList = new QListWidget(centralWidget);
+    goodStatusList = new QListWidget(centralWidget);
+    badStatusList = new QListWidget(centralWidget);
     fetchButton = new QPushButton("Fetch Status", centralWidget);
     layout = new QVBoxLayout(centralWidget);
+    goodStatusLabel = new QLabel("operational status:", centralWidget);
+    badStatusLabel = new QLabel("non operational status:", centralWidget);
 
     layout->addWidget(fetchButton);
-    layout->addWidget(statusList);
+    layout->addWidget(goodStatusLabel);
+    layout->addWidget(goodStatusList);
+    layout->addWidget(badStatusLabel);
+    layout->addWidget(badStatusList);
+
 
     centralWidget->setLayout(layout);
     setCentralWidget(centralWidget);
@@ -66,14 +73,20 @@ void MainWindow::handleReply(QNetworkReply *reply) {
 
     QJsonArray components = jsonObj["components"].toArray();
 
-    statusList->clear();
+    goodStatusList->clear();
+    badStatusList->clear();
 
     foreach (QJsonValue v, components) {
         QJsonObject componentObj = v.toObject();
         QString name = componentObj["name"].toString();
         QString status = componentObj["status"].toString();
         QString line = name + " - " + status;
-        if (!line.contains("Visit www.github")) statusList->addItem(line);
+        if (name != "Visit www.githubstatus.com for more information" && status == "operational") {
+            goodStatusList->addItem(line);
+        }
+        if (name != "Visit www.githubstatus.com for more information" && status != "operational") {
+            badStatusList->addItem(line);
+        }
     }
 
     reply->deleteLater();
