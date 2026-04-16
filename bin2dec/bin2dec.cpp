@@ -1,11 +1,8 @@
-#include <iostream>
 #include <string>
 #include <stdexcept>
+#include "bin2dec.h"
 
-int main() {
-    std::string number;
-    std::cout << "Please enter your binary number: ";
-    std::getline(std::cin, number);
+int binToDec(const std::string& number) {
 
     if (number.empty()) {
         throw std::runtime_error("Wrong input! Please enter a binary number");
@@ -39,7 +36,6 @@ int main() {
             throw std::runtime_error("Wrong input! Please enter a binary number");
         }
     }
-
-    std::cout << result << std::endl;
-    return 0;
+    return result;
 }
+
